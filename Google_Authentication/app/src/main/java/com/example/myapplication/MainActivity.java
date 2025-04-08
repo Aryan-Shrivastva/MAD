@@ -73,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         // Force logout to always show account picker
-        googleSignInClient.signOut();
-        auth.signOut(); // removing this will not make you log out everytime
+        // applying the below codes will make you log out everytime
+//        googleSignInClient.signOut();
+//        auth.signOut();
 
         SignInButton signInButton = findViewById(R.id.signIn);
         signInButton.setOnClickListener(new View.OnClickListener() {
