@@ -31,7 +31,7 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Check permission first
+        // Checking the  permission first
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -75,7 +75,7 @@ public class CameraActivity extends AppCompatActivity {
             galleryAddPic();
             Toast.makeText(this, "Photo saved", Toast.LENGTH_SHORT).show();
         }
-        finish(); // return to MainActivity
+        finish();
     }
 
     private void galleryAddPic() {
@@ -98,7 +98,7 @@ public class CameraActivity extends AppCompatActivity {
                 dispatchTakePictureIntent();
             } else {
                 Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show();
-                finish(); // close activity if permission denied
+                finish(); // this will close activity if permission denied
             }
         }
     }
