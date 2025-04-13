@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
 
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> selectSaveFolderLauncher;
     ActivityResultLauncher<Intent> selectLoadFolderLauncher;
     ActivityResultLauncher<Intent> selectImagesLauncher;
+
+    final int REQUEST_IMAGE_DETAILS = 101; // request code for image details
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         imageUris.clear();
-
                         if (result.getData().getClipData() != null) {
                             int count = result.getData().getClipData().getItemCount();
                             for (int i = 0; i < count; i++) {
@@ -76,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                             Uri imageUri = result.getData().getData();
                             imageUris.add(imageUri);
                         }
-
                         imageAdapter = new ImageUriAdapter(this, imageUris);
                         gridView.setAdapter(imageAdapter);
                     }
@@ -88,14 +89,17 @@ public class MainActivity extends AppCompatActivity {
 
         gridView.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent = new Intent(this, ImageDetailsActivity.class);
-            intent.putExtra("imageUri", imageUris.get(i).toString());
-            startActivity(intent);
+            intent.putExtra("imageUri", imageUris.get(i).toString()); // Pass the image URI
+            intent.putExtra("position", i); // Pass the image position
+            startActivityForResult(intent, REQUEST_IMAGE_DETAILS);
         });
     }
 
     void openFolderPicker(boolean isSave) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         if (isSave) {
             selectSaveFolderLauncher.launch(intent);
         } else {
@@ -140,7 +144,22 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                Intent.FLAG_GRANT_READ_URI_PERMISSION);
         selectImagesLauncher.launch(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_DETAILS && resultCode == RESULT_OK && data != null) {
+            boolean deleted = data.getBooleanExtra("image_deleted", false);
+            int position = data.getIntExtra("position", -1);
+            if (deleted && position >= 0 && position < imageUris.size()) {
+                imageUris.remove(position);
+                imageAdapter.notifyDataSetChanged();
+                Toast.makeText(this, "Image removed from list", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
