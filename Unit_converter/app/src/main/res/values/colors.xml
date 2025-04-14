@@ -9,6 +9,6 @@
 
     <!-- Night mode colors -->
     <color name="colorPrimaryNight">#1E3A8A</color>
-    <color name="colorPrimaryDarkNight">#0F2259</color>
+    <color name="colorPrimaryDarkNight">#020F52</color>
     <color name="colorAccentNight">#64B5F6</color>
 </resources>
