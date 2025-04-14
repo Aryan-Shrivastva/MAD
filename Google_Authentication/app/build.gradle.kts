@@ -56,5 +56,8 @@ dependencies {
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    val lottieVersion = "3.4.0"
+    implementation("com.airbnb.android:lottie:$lottieVersion")
 }
 

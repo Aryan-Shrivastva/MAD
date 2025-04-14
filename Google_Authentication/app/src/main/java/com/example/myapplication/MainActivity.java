@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
@@ -19,11 +20,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.*;
-
+import com.airbnb.lottie.LottieAnimationView;
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     GoogleSignInClient googleSignInClient;
+    LottieAnimationView lottie2;
 
     private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +81,13 @@ public class MainActivity extends AppCompatActivity {
         // applying the below codes will make you log out everytime
 //        googleSignInClient.signOut();
 //        auth.signOut();
+
+
+        //Animation
+        lottie2 = findViewById(R.id.Lottie2);
+        lottie2.playAnimation();
+
+
 
         SignInButton signInButton = findViewById(R.id.signIn);
         signInButton.setOnClickListener(new View.OnClickListener() {

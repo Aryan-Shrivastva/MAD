@@ -8,7 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -17,6 +18,7 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseAuth auth;
     TextView welcome;
     Button logout;
+    private  LottieAnimationView lottie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,9 @@ public class HomeActivity extends AppCompatActivity {
             String name = user.getDisplayName();
             welcome.setText("Welcome, " + name + "!");
         }
+
+        lottie = findViewById(R.id.Lottie);
+        lottie.playAnimation();
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

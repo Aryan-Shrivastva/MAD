@@ -12,29 +12,41 @@
         android:id="@+id/welcome"
         android:layout_width="383dp"
         android:layout_height="54dp"
+        android:layout_marginBottom="260dp"
+        android:paddingStart="70dp"
         android:text="Welcome!"
         android:textColor="#000000"
         android:textSize="24sp"
-        android:paddingStart="70dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.305" />
+        app:layout_constraintTop_toBottomOf="@+id/Lottie" />
 
     <Button
         android:id="@+id/logout"
         android:layout_width="127dp"
         android:layout_height="57dp"
-        android:layout_marginBottom="336dp"
         android:text="Logout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.06" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/Lottie"
+        android:layout_width="364dp"
+        android:layout_height="272dp"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.142"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/dogg_dancing" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
