@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Authentication</string>
+    <!-- using this google auth client ID -->
     <string name="client_id">467359694202-mjtmor9sfi7oeutovhaijh926in39cju.apps.googleusercontent.com</string>
 </resources>

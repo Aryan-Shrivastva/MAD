@@ -39,6 +39,7 @@ import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    // UI elements
     private Spinner fromUnitSpinner;
     private Spinner toUnitSpinner;
     private EditText editTextNumber;
@@ -47,8 +48,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Switch themeSwitch;
     private  LottieAnimationView lottie;
 
-    private DecimalFormat df = new DecimalFormat("#.####");
+    private DecimalFormat df = new DecimalFormat("#.####"); //date formatter
 
+
+    //using conversion constants to convert everything to meters first
     private final double feet_to_meter = 0.3048;
     private final double inch_to_meter = 0.0254;
     private final double cm_to_meter = 0.01;
@@ -77,12 +80,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         toUnitSpinner = findViewById(R.id.toUnit);
         convertButton = findViewById(R.id.button);
 
-        lottie = findViewById(R.id.Lottie);
 
+        //Lottie animation on app launch
+        lottie = findViewById(R.id.Lottie);
         lottie.playAnimation();
 
 
-        //For toolbar
+        //Setting up toolbar
         Toolbar toolbar = findViewById(R.id.settingsToolbar);
         setSupportActionBar(toolbar);
 
@@ -94,19 +98,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 android.R.layout.simple_spinner_item
         );
 
-
-
-//        themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->{
-//            if(isChecked){
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//            }else{
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//            }
-//
-//            SharedPreferences.Editor editor = getSharedPreferences("prefs", MODE_PRIVATE).edit();
-//            editor.putBoolean("dark_mode", isChecked);
-//            editor.apply();
-//        });
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -142,12 +133,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         AppCompatDelegate.setDefaultNightMode(savedTheme);
     }
 
+    //Settings menu in the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
+
+    //Handling toolbar menu item click-> this opens settings screen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
@@ -159,25 +153,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-
-
-
-
-    //Lottie
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // These two methods are required by the spinner interface, but we are not using them here
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -188,6 +164,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+
+    //This will handle the logic of converting values between selected units
     private void convertUnits() {
         //input values
         String inputString = editTextNumber.getText().toString();
@@ -208,6 +186,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+
+    //first we will convert input to meters, then will convert from meter to the target unit
     private double convert(double value, String fromUnit, String toUnit) {
         // Converting unit to meters
         double valueInMeters = 0;

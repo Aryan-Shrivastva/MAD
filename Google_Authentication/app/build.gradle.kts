@@ -44,19 +44,20 @@ dependencies {
 
     implementation(libs.play.services.auth)
 
+    // Firebase BoM - handles versioning for Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
+    // Dependency for the Firebase Authentication library
     implementation("com.google.firebase:firebase-auth")
 
-    // Also add the dependencies for the Credential Manager libraries and specify their versions
+    // Also adding the dependencies for the Credential Manager libraries and specify their versions
     implementation("androidx.credentials:credentials:1.3.0")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
+    //Lottie Animations
     val lottieVersion = "3.4.0"
     implementation("com.airbnb.android:lottie:$lottieVersion")
 }

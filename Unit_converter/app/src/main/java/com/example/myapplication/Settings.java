@@ -16,7 +16,7 @@ public class Settings extends AppCompatActivity {
     private RadioGroup themeRadioGroup;
     private RadioButton lightThemeRadio;
     private RadioButton darkThemeRadio;
-    public SharedPreferences sharedPreferences;
+    public SharedPreferences sharedPreferences; //this will save user's theme preferences
     public static final String pref_name = "unit_converter_prefs";
     public static final String theme_key = "app_theme";
 
@@ -59,12 +59,16 @@ public class Settings extends AppCompatActivity {
         });
     }
 
+
+    //saving the selected theme to sharedPreferences
     private void saveThemePreference(int themeMode) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(theme_key, themeMode);
         editor.apply();
     }
 
+
+    //when back arrow is clicked, this will just close the screen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

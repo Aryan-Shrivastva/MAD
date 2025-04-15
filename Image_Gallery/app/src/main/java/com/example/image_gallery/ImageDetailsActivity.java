@@ -27,7 +27,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
     TextView textDetails;
     Button delete;
     String imagePath;
-    Uri imageUri;
+    Uri imageUri; // URI of the image
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
         String uriString = getIntent().getStringExtra("imageUri");
         imagePath = getIntent().getStringExtra("imagePath");
 
+        // If no URI or path is passed, show an error and finish the activity
         if (uriString == null && imagePath == null) {
             Toast.makeText(this, "Invalid image", Toast.LENGTH_SHORT).show();
             finish();
@@ -61,6 +62,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 imageView.setImageBitmap(bitmap);
 
+                // Display image details (name, path, size, and last modified)
                 String info = "Name: " + imgFile.getName() +
                         "\nPath: " + imgFile.getAbsolutePath() +
                         "\nSize: " + (imgFile.length() / 1024) + " KB" +
@@ -70,6 +72,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
         }
 
         delete.setOnClickListener(v -> {
+            // Showing confirmation dialog before deleting the image
             new AlertDialog.Builder(this)
                     .setTitle("Delete Image")
                     .setMessage("Are you sure you want to delete this image?")
@@ -104,6 +107,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
         });
     }
 
+    //Method to load the image from URI
     private void loadImageFromUri(Uri uri) {
         try {
             ContentResolver resolver = getContentResolver();
@@ -111,7 +115,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
             imageView.setImageBitmap(bitmap);
 
-            // Use ContentResolver to query file metadata
+            // Using contentResolver to query file metadata
             String name = "Unknown";
             String size = "Unknown";
             long lastModified = -1;
@@ -134,6 +138,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
                 }
             }
 
+            //displaying image details
             String info = "Name: " + name +
                     "\nPath: " + uri.toString() +
                     "\nSize: " + size +

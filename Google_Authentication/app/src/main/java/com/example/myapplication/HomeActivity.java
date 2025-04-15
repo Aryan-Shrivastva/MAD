@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity {
 
-    FirebaseAuth auth;
+    FirebaseAuth auth;  // Firebase auth object
     TextView welcome;
     Button logout;
     private  LottieAnimationView lottie;
@@ -25,28 +25,30 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance(); // Getting firebase auth instance
         welcome = findViewById(R.id.welcome);
         logout = findViewById(R.id.logout);
 
+        //Getting current logged-in user
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             String name = user.getDisplayName();
             welcome.setText("Welcome, " + name + "!");
         }
 
+        //Lottie Animation
         lottie = findViewById(R.id.Lottie);
         lottie.playAnimation();
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                auth.signOut();
+                auth.signOut(); // Sign the user out
                 Toast.makeText(HomeActivity.this, "Shukar h chala gya!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HomeActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+                finish(); // Close HomeActivity
             }
         });
     }

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Unit_Converter</string>
+
+    //This array is used to populate the spinner for selected for selecting the units
     <string-array name="unitConverter">
         <item>Feet</item>
         <item>Inches</item>

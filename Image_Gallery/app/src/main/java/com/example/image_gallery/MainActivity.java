@@ -20,16 +20,16 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    GridView gridView;
-    ArrayList<Uri> imageUris = new ArrayList<>();
-    ImageUriAdapter imageAdapter;
+    GridView gridView; // GridView to display images
+    ArrayList<Uri> imageUris = new ArrayList<>(); // ArrayList to hold the URIs of images in the selected folder
+    ImageUriAdapter imageAdapter; // Adapter to manage the image URIs in the grid
 
     Uri selectedSaveFolderUri = null;
     Uri selectedLoadFolderUri = null;
 
-    ActivityResultLauncher<Intent> selectSaveFolderLauncher;
-    ActivityResultLauncher<Intent> selectLoadFolderLauncher;
-    ActivityResultLauncher<Intent> selectImagesLauncher;
+    ActivityResultLauncher<Intent> selectSaveFolderLauncher; // Launcher for save folder picker
+    ActivityResultLauncher<Intent> selectLoadFolderLauncher; // Launcher for load folder picker
+    ActivityResultLauncher<Intent> selectImagesLauncher; // Launcher for image picker
 
     final int REQUEST_IMAGE_DETAILS = 101; // request code for image details
 
@@ -38,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        gridView = findViewById(R.id.gridView);
+        gridView = findViewById(R.id.gridView);  // Initialize the GridView and the image list
 
+        // ActivityResultLauncher to handle folder selection for saving images
         selectSaveFolderLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == RESULT_OK) {
@@ -48,10 +49,11 @@ public class MainActivity extends AppCompatActivity {
                                 selectedSaveFolderUri,
                                 Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                         );
-                        takePhoto();
+                        takePhoto();// Once the folder is selected, now take a photo
                     }
                 });
 
+        // ActivityResultLauncher to handle folder selection for loading images
         selectLoadFolderLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == RESULT_OK) {
@@ -60,10 +62,11 @@ public class MainActivity extends AppCompatActivity {
                                 selectedLoadFolderUri,
                                 Intent.FLAG_GRANT_READ_URI_PERMISSION
                         );
-                        loadImagesFromFolder();
+                        loadImagesFromFolder();  // Load images from the selected folder
                     }
                 });
 
+        // ActivityResultLauncher for selecting multiple images
         selectImagesLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -83,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        findViewById(R.id.TakePhoto).setOnClickListener(v -> openFolderPicker(true));
-        findViewById(R.id.LoadImages).setOnClickListener(v -> openFolderPicker(false));
-        findViewById(R.id.selectImages).setOnClickListener(v -> openImagePicker());
+        findViewById(R.id.TakePhoto).setOnClickListener(v -> openFolderPicker(true)); // Button to pick folder for saving images
+        findViewById(R.id.LoadImages).setOnClickListener(v -> openFolderPicker(false));  // Button to pick folder for loading images
+        findViewById(R.id.selectImages).setOnClickListener(v -> openImagePicker()); // Button to pick images
 
         gridView.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent = new Intent(this, ImageDetailsActivity.class);
@@ -95,15 +98,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Open folder picker to choose where to save or load images
     void openFolderPicker(boolean isSave) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
                 Intent.FLAG_GRANT_READ_URI_PERMISSION |
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         if (isSave) {
-            selectSaveFolderLauncher.launch(intent);
+            selectSaveFolderLauncher.launch(intent); // Launch save folder picker
         } else {
-            selectLoadFolderLauncher.launch(intent);
+            selectLoadFolderLauncher.launch(intent); // Launch load folder picker
         }
     }
 
@@ -119,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, newFile.getUri());
-        startActivity(intent);
+        startActivity(intent); // Start the camera to take a picture
     }
 
     void loadImagesFromFolder() {
@@ -132,12 +136,12 @@ public class MainActivity extends AppCompatActivity {
         DocumentFile folder = DocumentFile.fromTreeUri(this, selectedLoadFolderUri);
         for (DocumentFile file : folder.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".jpg")) {
-                imageUris.add(file.getUri());
+                imageUris.add(file.getUri()); // Add images to the list
             }
         }
 
         imageAdapter = new ImageUriAdapter(this, imageUris);
-        gridView.setAdapter(imageAdapter);
+        gridView.setAdapter(imageAdapter); // Update the GridView with the loaded images
     }
 
     void openImagePicker() {
@@ -149,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         selectImagesLauncher.launch(intent);
     }
 
+    // Handle the result of the image details activity and delete image if necessary
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -156,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             boolean deleted = data.getBooleanExtra("image_deleted", false);
             int position = data.getIntExtra("position", -1);
             if (deleted && position >= 0 && position < imageUris.size()) {
-                imageUris.remove(position);
+                imageUris.remove(position);  // Remove deleted image from the list
                 imageAdapter.notifyDataSetChanged();
                 Toast.makeText(this, "Image removed from list", Toast.LENGTH_SHORT).show();
             }

@@ -3,11 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.image_gallery">
 
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA" />    <!-- Permissions to access the camera -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="28"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+
+
+    <!-- Declares that this app uses a camera and it’s required -->
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
 
@@ -35,11 +38,14 @@
 
         <activity android:name=".CameraActivity" />
 
+        <!-- FileProvider configuration to give camera access to file URIs -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.image_gallery.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
+
+            <!-- Tells FileProvider to use the paths defined in res/xml/file_paths.xml -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
